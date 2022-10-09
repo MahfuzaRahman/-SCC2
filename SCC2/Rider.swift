@@ -60,25 +60,25 @@ class Rider: UIViewController {
         view.addSubview(accGraphView)
         accGraphView.translatesAutoresizingMaskIntoConstraints = false
         accGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        accGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 250).isActive = true
+        accGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
         accGraphView.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
-        accGraphView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        accGraphView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
         // set up gyroscope graph
         view.addSubview(gyroGraphView)
         gyroGraphView.translatesAutoresizingMaskIntoConstraints = false
         gyroGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        gyroGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 450).isActive = true
+        gyroGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 360).isActive = true
         gyroGraphView.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
-        gyroGraphView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        gyroGraphView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
         // set up gyroscope graph
         view.addSubview(magGraphView)
         magGraphView.translatesAutoresizingMaskIntoConstraints = false
         magGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        magGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 650).isActive = true
+        magGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 510).isActive = true
         magGraphView.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
-        magGraphView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        magGraphView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
     func setupInitialDataEntries() {
