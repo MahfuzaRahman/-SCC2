@@ -126,16 +126,30 @@
                     <view key="view" contentMode="scaleToFill" id="iT3-Jk-YrM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyc-lW-d1d" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="15" y="150" width="384" height="150"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="kQQ-p6-HDn"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="hpk-bE-x7f"/>
                         <color key="backgroundColor" systemColor="systemBlueColor"/>
+                        <constraints>
+                            <constraint firstItem="vyc-lW-d1d" firstAttribute="centerX" secondItem="iT3-Jk-YrM" secondAttribute="centerX" id="2ag-0n-VRo"/>
+                            <constraint firstItem="vyc-lW-d1d" firstAttribute="top" secondItem="iT3-Jk-YrM" secondAttribute="top" constant="150" id="Vur-E1-h1S"/>
+                            <constraint firstItem="vyc-lW-d1d" firstAttribute="leading" secondItem="hpk-bE-x7f" secondAttribute="leading" constant="15" id="h7g-Cl-4Ov"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="1r7-ZP-eIo">
-                        <barButtonItem key="backBarButtonItem" title="SCC2" id="h15-ab-qME"/>
-                    </navigationItem>
+                    <connections>
+                        <outlet property="accGraph" destination="vyc-lW-d1d" id="Tme-wc-3t3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m9D-5l-8uM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2108.695652173913" y="-581.25"/>
+            <point key="canvasLocation" x="2107.2463768115945" y="-581.25"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vHp-iO-s5r">
@@ -161,6 +175,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -20,10 +20,11 @@ class Pedestrian: UIViewController {
     */
     
     // generates each graph
-    let accGraphView = LineChartView()
+    //let accGraphView = LineChartView()
     let gyroGraphView = LineChartView()
     let magGraphView = LineChartView()
     
+    @IBOutlet weak var accGraph: LineChartView!
     // creates the dataset for each graph
     var dataEntriesX = [ChartDataEntry]()
     var dataEntriesY = [ChartDataEntry]()
@@ -63,12 +64,12 @@ class Pedestrian: UIViewController {
     
     func setupViews() {
         // set up accelerometer graph
-        view.addSubview(accGraphView)
-        accGraphView.translatesAutoresizingMaskIntoConstraints = false
-        accGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        accGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
-        accGraphView.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
-        accGraphView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        view.addSubview(accGraph)
+        accGraph.translatesAutoresizingMaskIntoConstraints = false
+        accGraph.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        //accGraph.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
+       // accGraph.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
+       // accGraph.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
         // set up gyroscope graph
         view.addSubview(gyroGraphView)
@@ -130,8 +131,8 @@ class Pedestrian: UIViewController {
         let chartData = LineChartData(dataSets: [chartDataSet, chartDataSet2, chartDataSet3])
         
         // set up accelerometer graph view
-        accGraphView.data = chartData
-        accGraphView.xAxis.labelPosition = .bottom
+        accGraph.data = chartData
+        accGraph.xAxis.labelPosition = .bottom
         
         // set up gyroscope graph view
         gyroGraphView.data = chartData
@@ -147,19 +148,19 @@ class Pedestrian: UIViewController {
         // remove front entry
         if let oldEntry = dataEntries.first {
             dataEntries.removeFirst()
-            accGraphView.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
+            accGraph.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
             gyroGraphView.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
             magGraphView.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
         }
         
         // add most recent entry
         dataEntries.append(newDataEntry)
-        accGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
+        accGraph.data?.appendEntry(newDataEntry, toDataSet: dataSet)
         gyroGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
         magGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
         
-        accGraphView.notifyDataSetChanged()
-        accGraphView.moveViewToX(newDataEntry.x)
+        accGraph.notifyDataSetChanged()
+        accGraph.moveViewToX(newDataEntry.x)
         
         gyroGraphView.notifyDataSetChanged()
         gyroGraphView.moveViewToX(newDataEntry.x)
