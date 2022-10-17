@@ -54,77 +54,100 @@ class Rider: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // enables the realtime visualization of the graphs
-        motion.gyroUpdateInterval = 0.1
-        Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(didUpdatedChartView), userInfo: nil, repeats: true)
+        self.motion.gyroUpdateInterval = 1/20
+        self.motion.magnetometerUpdateInterval = 1/20
+        self.motion.accelerometerUpdateInterval = 1/20
+        Timer.scheduledTimer(timeInterval: 1/20, target: self, selector: #selector(didUpdatedChartView), userInfo: nil, repeats: true)
     }
     
     @objc func didUpdatedChartView() {
-        // didUpdatedAccChartView()
+        didUpdatedAccChartView()
         didUpdatedGyroChartView()
-      //  didUpdatedMagChartView()
+        didUpdatedMagChartView()
         xValue += 1
     }
     
     func didUpdatedAccChartView() {
-        // create new entries for the x, y, and z axes
-        let newDataEntryX = ChartDataEntry(x: xValue,
-                                          y: Double.random(in: 0...50))
-        let newDataEntryY = ChartDataEntry(x: xValue,
-                                          y: Double.random(in: 0...50))
-        let newDataEntryZ = ChartDataEntry(x: xValue,
-                                          y: Double.random(in: 0...50))
+        // RANDOM VALUES USED TO TEST ON IOS SIMULATOR
+//        var newDataEntryX = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+//        var newDataEntryY = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+//        var newDataEntryZ = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
         
-        // update the chart with data for each axis
-        updateAccChartView(with: newDataEntryX, dataEntries: &accDataEntriesX, dataSet: 0)
-        updateAccChartView(with: newDataEntryY, dataEntries: &accDataEntriesY, dataSet: 1)
-        updateAccChartView(with: newDataEntryZ, dataEntries: &accDataEntriesZ, dataSet: 2)
+        // create new entries for the x, y, and z axes
+        self.motion.startAccelerometerUpdates(to: OperationQueue.current!){ (data: CMAccelerometerData?, error: Error?) in
+            let acc: CMAccelerometerData = data!.self
+            let newDataEntryX = ChartDataEntry(x: self.xValue,
+                                               y: acc.acceleration.x)
+            let newDataEntryY = ChartDataEntry(x: self.xValue,
+                                               y: acc.acceleration.y)
+            let newDataEntryZ = ChartDataEntry(x: self.xValue,
+                                               y: acc.acceleration.z)
+            self.updateAccChartView(with: newDataEntryX, dataEntries: &self.accDataEntriesX, dataSet: 0)
+            self.updateAccChartView(with: newDataEntryY, dataEntries: &self.accDataEntriesY, dataSet: 1)
+            self.updateAccChartView(with: newDataEntryZ, dataEntries: &self.accDataEntriesZ, dataSet: 2)
+        }
     }
     
     func didUpdatedGyroChartView() {
+        // RANDOM VALUES USED TO TEST ON IOS SIMULATOR
+//        var newDataEntryX = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+//        var newDataEntryY = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+//        var newDataEntryZ = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+        
         // create new entries for the x, y, and z axes
-        // !!!! INITIALLY GOING TO BE RANDOM VALUES UNLESS TESTED ON IOS DEVICE !!!!
-        var newDataEntryX = ChartDataEntry(x: xValue,
-                                           y: Double.random(in: 0...50))
-        var newDataEntryY = ChartDataEntry(x: xValue,
-                                           y: Double.random(in: 0...50))
-        var newDataEntryZ = ChartDataEntry(x: xValue,
-                                           y: Double.random(in: 0...50))
-        
-        motion.startGyroUpdates(to: self.queue){ (data: CMGyroData?, error: Error?) in
-            if let trueData = data {
-                newDataEntryX = ChartDataEntry(x: self.xValue,
-                                               y: trueData.rotationRate.x)
-                newDataEntryY = ChartDataEntry(x: self.xValue,
-                                               y: trueData.rotationRate.y)
-                newDataEntryZ = ChartDataEntry(x: self.xValue,
-                                               y: trueData.rotationRate.z)
-            }
+        self.motion.startGyroUpdates(to: OperationQueue.current!){ (data: CMGyroData?, error: Error?) in
+            let gyro: CMGyroData = data!.self
+            let newDataEntryX = ChartDataEntry(x: self.xValue,
+                                               y: gyro.rotationRate.x)
+            let newDataEntryY = ChartDataEntry(x: self.xValue,
+                                               y: gyro.rotationRate.y)
+            let newDataEntryZ = ChartDataEntry(x: self.xValue,
+                                               y: gyro.rotationRate.z)
+            self.updateGyroChartView(with: newDataEntryX, dataEntries: &self.gyroDataEntriesX, dataSet: 0)
+            self.updateGyroChartView(with: newDataEntryY, dataEntries: &self.gyroDataEntriesY, dataSet: 1)
+            self.updateGyroChartView(with: newDataEntryZ, dataEntries: &self.gyroDataEntriesZ, dataSet: 2)
         }
-        
-        // update the gyroscope chart with data for each axis
-        updateGyroChartView(with: newDataEntryX, dataEntries: &gyroDataEntriesX, dataSet: 0)
-        updateGyroChartView(with: newDataEntryY, dataEntries: &gyroDataEntriesY, dataSet: 1)
-        updateGyroChartView(with: newDataEntryZ, dataEntries: &gyroDataEntriesZ, dataSet: 2)
     }
     
     func didUpdatedMagChartView() {
-        // create new entries for the x, y, and z axes
-        let newDataEntryX = ChartDataEntry(x: xValue,
-                                          y: Double.random(in: 0...50))
-        let newDataEntryY = ChartDataEntry(x: xValue,
-                                          y: Double.random(in: 0...50))
-        let newDataEntryZ = ChartDataEntry(x: xValue,
-                                          y: Double.random(in: 0...50))
+        // RANDOM VALUES USED TO TEST ON IOS SIMULATOR
+//        var newDataEntryX = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+//        var newDataEntryY = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
+//        var newDataEntryZ = ChartDataEntry(x: xValue,
+//                                           y: Double.random(in: 0...50))
         
-        // update the chart with data for each axis
-        updateMagChartView(with: newDataEntryX, dataEntries: &magDataEntriesX, dataSet: 0)
-        updateMagChartView(with: newDataEntryY, dataEntries: &magDataEntriesY, dataSet: 1)
-        updateMagChartView(with: newDataEntryZ, dataEntries: &magDataEntriesZ, dataSet: 2)
+        // create new entries for the x, y, and z axes
+        self.motion.startMagnetometerUpdates(to: OperationQueue.current!){ (data: CMMagnetometerData?, error: Error?) in
+            let mag: CMMagnetometerData = data!.self
+            let newDataEntryX = ChartDataEntry(x: self.xValue,
+                                               y: mag.magneticField.x)
+            let newDataEntryY = ChartDataEntry(x: self.xValue,
+                                               y: mag.magneticField.y)
+            let newDataEntryZ = ChartDataEntry(x: self.xValue,
+                                               y: mag.magneticField.z)
+            self.updateMagChartView(with: newDataEntryX, dataEntries: &self.magDataEntriesX, dataSet: 0)
+            self.updateMagChartView(with: newDataEntryY, dataEntries: &self.magDataEntriesY, dataSet: 1)
+            self.updateMagChartView(with: newDataEntryZ, dataEntries: &self.magDataEntriesZ, dataSet: 2)
+        }
     }
     
     func setupViews() {
         // set up accelerometer graph
         view.addSubview(accGraphView)
+        // add graph title
+        let accLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
+            accLabel.center = CGPoint(x: 77, y: 120)
+            accLabel.textAlignment = .center
+            accLabel.text = "ACCELERATION"
+        self.view.addSubview(accLabel)
         accGraphView.translatesAutoresizingMaskIntoConstraints = false
         accGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         accGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
@@ -133,20 +156,31 @@ class Rider: UIViewController {
         
         // set up gyroscope graph
         view.addSubview(gyroGraphView)
+        // add graph title
+        let gyroLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
+            gyroLabel.center = CGPoint(x: 77, y: 280)
+            gyroLabel.textAlignment = .center
+            gyroLabel.text = "ROTATION RATE"
+        self.view.addSubview(gyroLabel)
         gyroGraphView.translatesAutoresizingMaskIntoConstraints = false
         gyroGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         gyroGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 360).isActive = true
         gyroGraphView.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
         gyroGraphView.heightAnchor.constraint(equalToConstant: 150).isActive = true
 
-        // set up gyroscope graph
+        // set up magnetometer graph
         view.addSubview(magGraphView)
+        // add graph title
+        let magLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
+            magLabel.center = CGPoint(x: 77, y: 440)
+            magLabel.textAlignment = .center
+            magLabel.text = "GMF STRENGTH"
+        self.view.addSubview(magLabel)
         magGraphView.translatesAutoresizingMaskIntoConstraints = false
         magGraphView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        magGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 510).isActive = true
+        magGraphView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 520).isActive = true
         magGraphView.widthAnchor.constraint(equalToConstant: view.frame.width - 32).isActive = true
         magGraphView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
     }
     
     func setupInitialDataEntries() {
@@ -171,7 +205,6 @@ class Rider: UIViewController {
             let dataEntry = ChartDataEntry(x: Double($0), y: 0)
             accDataEntriesZ.append(dataEntry)
         }
-        
     }
     
     func setupInitialGyroDataEntries() {
@@ -208,7 +241,6 @@ class Rider: UIViewController {
             let dataEntry = ChartDataEntry(x: Double($0), y: 0)
             magDataEntriesZ.append(dataEntry)
         }
-        
     }
     
     func setupChartData(){
@@ -242,15 +274,6 @@ class Rider: UIViewController {
         // set up accelerometer graph view
         accGraphView.data = chartData
         accGraphView.xAxis.labelPosition = .bottom
-        
-        // set up gyroscope graph view
-//        gyroGraphView.data = chartData
-//        gyroGraphView.xAxis.labelPosition = .bottom
-//
-//        // set up magnetometer graph view
-//        magGraphView.data = chartData
-//        magGraphView.xAxis.labelPosition = .bottom
-        
     }
     
     func setupGyroChartData() {
@@ -314,24 +337,13 @@ class Rider: UIViewController {
         if let oldEntry = dataEntries.first {
             dataEntries.removeFirst()
             accGraphView.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
-//            gyroGraphView.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
-//            magGraphView.data?.removeEntry(oldEntry, dataSetIndex: dataSet)
         }
         
         // add most recent entry
         dataEntries.append(newDataEntry)
         accGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
-//        gyroGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
-//        magGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
-//
         accGraphView.notifyDataSetChanged()
         accGraphView.moveViewToX(newDataEntry.x)
-        
-//        gyroGraphView.notifyDataSetChanged()
-//        gyroGraphView.moveViewToX(newDataEntry.x)
-//
-//        magGraphView.notifyDataSetChanged()
-//        magGraphView.moveViewToX(newDataEntry.x)
     }
     
     func updateGyroChartView(with newDataEntry: ChartDataEntry, dataEntries: inout [ChartDataEntry], dataSet: Int) {
@@ -344,7 +356,6 @@ class Rider: UIViewController {
         // add most recent entry
         dataEntries.append(newDataEntry)
         gyroGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
-       
         gyroGraphView.notifyDataSetChanged()
         gyroGraphView.moveViewToX(newDataEntry.x)
     }
@@ -359,9 +370,7 @@ class Rider: UIViewController {
         // add most recent entry
         dataEntries.append(newDataEntry)
         magGraphView.data?.appendEntry(newDataEntry, toDataSet: dataSet)
-       
         magGraphView.notifyDataSetChanged()
         magGraphView.moveViewToX(newDataEntry.x)
     }
-
 }
